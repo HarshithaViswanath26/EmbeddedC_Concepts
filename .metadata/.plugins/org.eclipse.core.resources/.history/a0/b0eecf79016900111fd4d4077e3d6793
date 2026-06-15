@@ -1,0 +1,26 @@
+/*
+ * main.c
+ *
+ *  Created on: Jun 15, 2026
+ *      Author: 49157
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+
+typedef struct
+{
+	uint32_t TX_ENABLE : 1;
+	uint32_t RX_ENABLE : 1;
+	uint32_t PARITY_ENABLE : 1;
+	uint32_t BAUD_RATE_SELECTOR : 2;
+	uint32_t RESERVED : 27;
+
+}UART_RegDef_t;
+
+int main(void)
+{
+
+	return 0;
+}

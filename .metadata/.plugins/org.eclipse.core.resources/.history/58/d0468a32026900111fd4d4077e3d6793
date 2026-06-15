@@ -1,0 +1,42 @@
+/*
+ * main.c
+ *
+ *  Created on: Jun 15, 2026
+ *      Author: 49157
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+
+#define DISABLE				0
+#define ENABLE 				1
+
+typedef struct
+{
+	uint32_t TX_ENABLE : 1;
+	uint32_t RX_ENABLE : 1;
+	uint32_t PARITY_ENABLE : 1;
+	uint32_t BAUD_RATE_SELECTOR : 2;
+	uint32_t RESERVED : 27;
+
+}UART_RegDef_t;
+
+#define REG_ADDR		((volatile uint32_t*)0x20000004)
+#define UART_REG		((UART_RegDef_t*) REG_ADDR)
+void UART_SetTX(uint8_t EnOrDi)
+{
+	if(EnOrDi == ENABLE)
+	{
+
+	}
+}
+
+
+
+
+int main(void)
+{
+
+	return 0;
+}

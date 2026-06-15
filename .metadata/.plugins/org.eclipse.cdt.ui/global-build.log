@@ -1,0 +1,5 @@
+23:58:44 **** Incremental Build of configuration Debug for project Struct&Bitfield ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o main.o "..\\main.c" 
+gcc -o Struct&Bitfield.exe main.o 
+Info: Nothing to build for Struct&Bitfield

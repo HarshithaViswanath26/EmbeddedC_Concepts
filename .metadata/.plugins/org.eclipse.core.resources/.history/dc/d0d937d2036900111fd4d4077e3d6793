@@ -1,0 +1,78 @@
+/*
+ * main.c
+ *
+ *  Created on: Jun 15, 2026
+ *      Author: 49157
+ */
+
+
+#include <stdint.h>
+#include <stdio.h>
+
+#define DISABLE				0
+#define ENABLE 				1
+
+#define BAUD0				00
+#define BAUD1				01
+#define BAUD2				10
+#define BAUD3				11
+
+typedef struct
+{
+	uint32_t TX_ENABLE : 1;
+	uint32_t RX_ENABLE : 1;
+	uint32_t PARITY_ENABLE : 1;
+	uint32_t BAUD_RATE_SELECTOR : 2;
+	uint32_t RESERVED : 27;
+
+}UART_RegDef_t;
+
+#define REG_ADDR		((volatile uint32_t*)0x20000004)
+#define UART_REG		((UART_RegDef_t*) REG_ADDR)
+
+void UART_SetTX(uint8_t EnOrDi)
+{
+	if(EnOrDi == ENABLE)
+		UART_REG->TX_ENABLE = 1;
+	else
+		UART_REG->TX_ENABLE = 0;
+}
+
+void UART_SetRX(uint8_t EnOrDi)
+{
+	if(EnOrDi == ENABLE)
+		UART_REG->RX_ENABLE = 1;
+	else
+		UART_REG->RX_ENABLE = 0;
+
+}
+
+void UART_SetParity(uint8_t EnOrDi)
+{
+	if(EnOrDi == ENABLE)
+		UART_REG->PARITY_ENABLE = 1;
+	else
+		UART_REG->PARITY_ENABLE = 0;
+
+}
+
+void UART_SetBaudRate(uint8_t baud)
+{
+	UART_REG->BAUD_RATE_SELECTOR = baud;
+}
+
+
+int main(void)
+{
+	UART_SetTX(ENABLE);
+	UART_SetRX(DISABLE);
+	UART_SetParity(ENABLE);
+	UART_SetBaudRate(BAUD2);
+
+	printf("TX ENABLE bit: %u \n", UART_REG->TX_ENABLE);
+	printf("RX ENABLE bit: %u \n", UART_REG->RX_ENABLE);
+	printf("Parity ENABLE bit: %u \n", UART_REG->PARITY_ENABLE);
+	printf("Baudrate Selector: %u \n", UART_REG->BAUD_RATE_SELECTOR);
+
+	return 0;
+}
