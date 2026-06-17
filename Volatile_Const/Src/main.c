@@ -16,6 +16,61 @@
  ******************************************************************************
  */
 
+/*
+# STM32F407G-DISC1 — EXTI Button LED Blink Pattern
+
+A bare-metal STM32 project that detects a button press using EXTI (External Interrupt) on PA0 and blinks the green LED on PD12 in patterns defined by a const lookup table.
+
+---
+
+## What This Project Does
+
+- Detects button press via EXTI0 (rising edge trigger)
+- Each press cycles through a blink pattern: 1, 2, 3, 4 blinks
+- Pattern is selected from a `const` lookup table stored in Flash
+- Debounce handled in software inside the ISR
+
+---
+
+## Hardware
+
+| Pin  | Function       | Notes                          |
+|------|----------------|--------------------------------|
+| PA0  | USER Button B1 | External pull-down on board, no internal PUPD needed |
+| PD12 | Green LED      | Push-pull output               |
+
+---
+
+## Key Concepts Covered
+
+- **EXTI** — External interrupt triggered on rising edge (0→1) since button has pull-down
+- **SYSCFG clock** — Must be enabled before `Interrupt_Init` to map PA0 to EXTI0
+- **Debouncing** — Short delay in ISR lets bounce settle before reading pin state
+- **EXTI_PR pending bit** — Cleared at end of ISR with write-1-to-clear, prevents re-triggering
+- **volatile** — Used on `flag` and `count` since they are shared between ISR and main loop. Without it, compiler optimization (-O2/-O3) caches them in CPU registers and main loop never sees ISR updates
+- **const lookup table** — Array placed in Flash, not RAM. Index selected with `count % 4` to cycle patterns
+
+---
+
+## Compiler Optimization Note
+
+This project behaves differently under optimization:
+
+| Level | Behavior |
+|-------|----------|
+| `-O0` (Debug) | Works even without `volatile` — no caching |
+| `-O2` / `-O3` | Breaks without `volatile` — compiler caches `flag` in register, main loop never sees ISR write |
+
+Always use `volatile` for variables shared between an ISR and main code.
+
+---
+
+## Startup Note
+
+Add a small delay at the start of `main` when running without the debugger. On power-on the CPU starts instantly and peripherals need a moment to stabilize. The debugger's attach process accidentally provides this delay, which is why code can work in debug but not in run mode.
+*/
+
+
 #include <stdint.h>
 #include <stdio.h>
 
