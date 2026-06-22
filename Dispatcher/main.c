@@ -30,11 +30,11 @@ void Led_Toggle(void)
 
 typedef struct
 {
-	const char* inputName;
+	const char* inputName;  //why char ptr instead of just char? & why const?
 	void (*handler)(void);
 }Command;
 
-static const Command cmd_lut[] = {
+static const Command cmd_lut[] = {   //why static and const for the LUT?
 	{"Led_On", Led_On},
 	{"Led_Off", Led_Off},
 	{"Led_Toggle", Led_Toggle},
